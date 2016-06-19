@@ -13,8 +13,8 @@ const ENV = {
 
 const PATH = {
     app : path.join(__dirname, 'app'),
-    dist : path.join(__dirname, 'dist'),
-    style : path.join(__dirname, 'app/main.css')
+    dist : path.join(__dirname, 'dist')
+    // style : path.join(__dirname, 'app/main.css')
 };
 
 const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
@@ -28,22 +28,25 @@ process.env.BABEL_ENV = TARGET;
 const common = {
     entry : {
         main : [
-            './app/js/app.js'
+            './app/js/index.js'
         ]
     },
     output : {
         path : PATH.dist,
-        filename : 'app.js'
+        filename : 'main.js',
+        sourceMapFilename : 'main.map'
     },
     resolve : {
         extensions : ['', '.js', '.jsx']
     },
+    devtool : '#source-map',
     module : {
         loaders : [
             {
-                test: /\.jsx?$/,
-                include: PATH.app,
-                loaders: ['babel?cacheDirectory']
+                test : /\.jsx?$/,
+                include : PATH.app,
+                // loaders : ['babel?cacheDirectory']
+                loader : 'babel'
             }
             // {
             //     test : /\.js$/,
@@ -75,19 +78,19 @@ if(TARGET === 'start' || !TARGET) {
         //     style: PATH.style
         // },
         // devtool: 'eval-source-map',
-        devServer: {
-            historyApiFallback: true,
-            hot: true,
-            inline: true,
-            progress: true,
+        devServer : {
+            historyApiFallback : true,
+            hot : true,
+            inline : true,
+            progress : true,
 
             // display only errors to reduce the amount of output
-            stats: 'errors-only',
+            stats : 'errors-only',
 
             // parse host and port from env so this is easy
             // to customize
-            host: ENV.host,
-            port: ENV.port
+            host : ENV.host,
+            port : ENV.port
         },
         // module: {
         //     loaders: [
@@ -99,7 +102,7 @@ if(TARGET === 'start' || !TARGET) {
         //         }
         //     ]
         // },
-        plugins: [
+        plugins : [
             new webpack.HotModuleReplacementPlugin()
         ]
     });
